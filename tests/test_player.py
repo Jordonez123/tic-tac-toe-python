@@ -3,6 +3,8 @@ from player import PlayerImpl
 
 class TestPlayer(unittest.TestCase):
 
+    # -------------------------- Set Up and Tear Down ------------------------------------
+
     def setUp(self):
         # Runs before each test case
         # Creates fresh player1 and player2 instances
@@ -14,6 +16,8 @@ class TestPlayer(unittest.TestCase):
         # sets both player1 and player2 instances to None
         self.player1 = None
         self.player2 = None
+    
+    # -------------------------- Player Instance Variables ------------------------------------
     
     def test_player_initialization(self):
         self.assertEqual(self.player1.name, "Jordan")
@@ -63,8 +67,9 @@ class TestPlayer(unittest.TestCase):
         # Check that the move order was correctly assigned
         self.assertEqual(self.player1.player_id, move_order,
                          f"Player move order: {move_order} not successfully assigned.")
-
-    """
+    
+    # -------------------------- Player Icon ------------------------------------
+    
     def test_set_player_icon(self):
         # Icon mapping
         icon_mapping = {"X": 0, "O": 1}
@@ -89,32 +94,134 @@ class TestPlayer(unittest.TestCase):
                          f"Player 2 icon: {self.player2.player_icon} does not correspond to player id: {self.player2.player_id}")
         
         # Check that the icons for each player have been correctly assigned 
+    
+    def test_cannot_set_none_player_icon(self):
+        # Set the player ID
+        self.player1.set_player_id(0)
 
+        # Assign a None value to the player icon
+        player_icon = None
+
+        # Expecting a ValueError to be raised
+        with self.assertRaises(ValueError) as context:
+            self.player1.set_player_icon(player_icon)
+        
+        self.assertEqual(str(context.exception), "Player icon cannot be set to None or Empty.")
+    
+    def test_cannot_overwrite_player_icon(self):
+        # Set the player ID
+        self.player1.set_player_id(0)
+        
+        # Create original and new icons to test
+        original_icon = "X"
+        new_icon = "O"
+
+        # Assign the original icon to player
+        self.player1.set_player_icon(original_icon)
+        
+        # Expecting a ValueError when attempting to overwrite original player icon
+        with self.assertRaises(ValueError) as context:
+            self.player1.set_player_icon(new_icon)
+
+        self.assertEqual(str(context.exception), f"Player already has an icon: {self.player1.player_icon}")
+
+    def test_cannot_assign_icon_without_player_id(self):
+        # Create a player icon
+        player_icon = "X"
+
+        # Expecting a ValueError when attempting to assign a player icon
+        # Without first assigning a valid player ID
+        with self.assertRaises(ValueError) as context:
+            self.player1.set_player_icon(player_icon)
+        
+        self.assertEqual(str(context.exception), "The player must have a valid player ID before attempting to assign a player icon.")
+
+    def test_cannot_assign_invalid_player_icon(self):
+        # Create an invalid icon
+        player_icon = ":)"
+
+        # Assign player ID for testing
+        self.player1.set_player_id(0)
+
+        # Expecting ValueError exception when attempting to assign invalid player icon
+        with self.assertRaises(ValueError) as context:
+            self.player1.set_player_icon(player_icon)
+        
+        self.assertEqual(str(context.exception), "Invalid Player icon assignment. Must assign a player icon of either X or O.")
+
+    # -------------------------- Player Moves ------------------------------------
+    
+    def test_player_cannot_make_nondirectional_move(self):
+        # Assign player id
+        self.player1.set_player_id(0)
+
+        # Assign player icon to the created player above
+        self.player1.set_player_icon("X")
+
+        # create a list of invalid non-directional player moves
+        non_valid_moves = [
+            ((["ajjkjn", 0, 456, {"a": 1}], {1:0}), "Move must be composed of valid string direction values."),
+            (("left", "middle"), "Incorrect string direction value for row position."),
+            (("top", "bottom"), "Incorrect string direction value for column position."),
+            (("12345", "middle"), "Move must be composed of valid string direction values."), # testing positive digit
+            (("middle", "-1902"), "Move must be composed of valid string direction values."), # testing negative digit
+            ((None, "left"), "Move must not have None values for either row or column directions."), # testing for None row value
+            (("bottom", None), "Move must not have None values for either row or column directions.") # testing for None column value
+        ]
+
+        for move, expected_message in non_valid_moves:
+            with self.subTest(bad_id=move):
+                # Expecting a Value Error exception for each invalid move
+                with self.assertRaises(ValueError) as context:
+                    self.player1.make_move(move)
+                self.assertEqual(str(context.exception), expected_message)
+
+    def test_player_cannot_make_move_without_id_assignment(self):
+        # Player move that will be attempted
+        player_move = ("bottom", "left")
+
+        # Expecting a ValueError Exception when attempting to make move without assigning an id to player.
+        with self.assertRaises(ValueError) as context:
+            self.player1.make_move(player_move)
+        
+        self.assertEqual(str(context.exception), "Cannot make a move without assigning a player id.")
+        
+    def test_player_cannot_make_move_without_icon_assigned(self):
+        # Assign player id
+        self.player1.set_player_id(0)
+
+        # Player move that will be attempted
+        player_move = ("bottom", "left")
+
+        # Expecting a ValueError Exception when attempting to make move
+        # Without assigning the player an icon
+        with self.assertRaises(ValueError) as context:
+            self.player1.make_move(player_move)
+        
+        self.assertEqual(str(context.exception), "Cannot make a move without assigning a player icon.")
 
     def test_player_make_move(self):
-        # testing a valid move for now, will circle back later
-        player1_move, player2_move = ("bottom", "middle"), ("top", "middle")
+        # Creating a valid move
+        player_move = ("bottom", "middle")
 
-        self.player1.make_move(player1_move)
-        self.player2.make_move(player2_move)
+        # Assigning a valid player id
+        self.player1.set_player_id(0)
 
-        player1_move_positions, player2_move_positions = (2, 1), (0, 1)
+        # Assigning a valid player icon
+        self.player1.set_player_icon("O")
+
+        self.player1.make_move(player_move)
+        
+
+        player1_move_positions = (2, 1)
 
         # Check if player1 and player2 move positions are correctly recorded
-        self.assertTrue(player1_move_positions in self.player1.player_moves, 
+        self.assertIn(player1_move_positions, self.player1.player_moves, 
                         f"Player 1 move: {player1_move_positions} not found in {self.player1.player_moves}")
-        self.assertTrue(player2_move_positions in self.player2.player_moves, 
-                        f"Player 2 move: {player2_move_positions} not found in {self.player2.player_moves}")
 
         print("")
         print(f"Player 1 moves: {self.player1.player_moves}")
-        print(f"Player 2 moves: {self.player2.player_moves}")
 
-    
-    
-    
-    
-    """
 
 if __name__ == "__main__":
     unittest.main()

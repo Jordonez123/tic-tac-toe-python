@@ -21,5 +21,9 @@ class Player(ABC):
         pass
 
     @abstractmethod
-    def make_move(self):
+    def make_move(self, move: tuple[str, str]) -> None:
+        pass
+
+    @abstractmethod
+    def _make_move(self, move: tuple[str, str]) -> None:
         pass
