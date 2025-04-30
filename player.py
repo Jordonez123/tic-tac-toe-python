@@ -49,7 +49,7 @@ class PlayerImpl(Player):
         This corresponds to column indices of 0,1,2.
         """
         row_mapping = {"top": 0, "middle": 1, "bottom": 2}
-        column_mapping = {"left": 1, "middle": 1, "right": 2}
+        column_mapping = {"left": 0, "middle": 1, "right": 2}
 
         row_string, column_string = move
 
