@@ -31,9 +31,6 @@ class PlayerImpl(Player):
             raise ValueError("The player must have a valid player ID before attempting to assign a player icon.")
 
 
-    def check_if_won(self):
-        pass
-
     def make_move(self, move: tuple[str, str]) -> None:
         """
         Function designed to check that the provided
