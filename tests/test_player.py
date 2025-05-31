@@ -222,12 +222,6 @@ class TestPlayer(unittest.TestCase):
         print("")
         print(f"Player 1 moves: {self.player1.player_moves}")
 
-    # -------------------------- Won A Game on Turn ------------------------------------
     
-    def test_player_won_game_on_turn(self):
-        # Assign  player id, icon
-        self.player1.set_player_id(0)
-        self.player1.set_player_icon("X")
-        self.player1.player_moves = {()}
 if __name__ == "__main__":
     unittest.main()

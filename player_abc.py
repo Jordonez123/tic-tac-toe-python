@@ -15,10 +15,6 @@ class Player(ABC):
     @abstractmethod
     def set_player_icon(self, icon: str):
         pass
-    
-    @abstractmethod
-    def check_if_won(self):
-        pass
 
     @abstractmethod
     def make_move(self, move: tuple[str, str]) -> None:
