@@ -39,7 +39,20 @@ class TestBoard(unittest.TestCase):
     
     # -------------------------- Update board ------------------------------------
     def test_place_mark(self):
-        pass
+        self.board.place_mark(0, 0, "X")
+        self.board.place_mark(1, 1, "O")
+        self.board.place_mark(2, 2, "X")
+        test_board = "X | ? | ?\n? | O | ?\n? | ? | X"
+        
+        self.assertEqual(str(self.board), test_board)
+    
+    def test_cannot_place_invalid_mark(self):
+        invalid_mark = ":)"
+        
+        with self.assertRaises(ValueError) as context:
+            self.board.place_mark(0, 0,invalid_mark)
+            
+        self.assertEqual(str(context.exception), "Cannot use an invalid mark on the board.")
     # -------------------------- Board Utilities ------------------------------------
     def test_reset_(self):
         pass

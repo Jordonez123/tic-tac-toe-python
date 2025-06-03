@@ -16,7 +16,9 @@ class Board:
         """
         Place a mark ("X" or "O") on the board.
         """
-        pass
+        if mark not in "XO":
+            raise ValueError("Cannot use an invalid mark on the board.")
+        self.board[row][col] = mark
     
     # -------------------------- Board Utilities ------------------------------------
    
