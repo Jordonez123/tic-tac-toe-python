@@ -63,8 +63,18 @@ class Board:
     def is_valid_move(self, row: int, col: int):
         """
         Check if a move is within bounds and on an empty cell.
+        Returns True for a positive case. Returns False otherwise.
         """
-        pass
+        
+        # out of bounds check
+        if not 0 <= row < len(self.board) and not 0 <= col < len(self.board[0]):
+            return False
+        # empty cell check
+        if self.board[row][col] != "?":
+            return False
+        
+        # all checks passed
+        return True
 
     # -------------------------- Winner Checks ------------------------------------
     def check_winner(self):
