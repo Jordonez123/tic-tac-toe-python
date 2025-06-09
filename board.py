@@ -86,7 +86,7 @@ class Board:
     # -------------------------- Game State ------------------------------------
     def current_game_state(self):
         """
-        Returns a status like "X wins", "0 wins", "Draw", or "In Progress".
+        Returns a status like "X wins", "O wins", "Draw", or "In Progress".
         """
         pass
 

@@ -109,10 +109,35 @@ class TestBoard(unittest.TestCase):
         pass
 
     # -------------------------- Game State ------------------------------------
-    def test_current_game_state(self):
+    def test_current_game_state_won(self):
+        """
+        Game state is returned as "X wins or O wins."
+        """
         pass
 
-    def test_is_game_over(self):
+    def test_current_game_state_draw(self):
+        """
+        Game state is returned as "Draw."
+        """
+        pass
+
+    def test_current_game_state_in_progress(self):
+        """
+        Game state is returned as "In Progress."
+        """
+        pass
+
+    def test_is_game_over_won(self):
+        """
+        Test if current game has concluded. Check when someone has won.
+        """
+        pass
+
+    def test_is_game_over_board_full(self):
+        """
+        Test if current game has concluded. Check when all the cells in the
+        3 x 3 board are filled.
+        """
         pass
 
 
