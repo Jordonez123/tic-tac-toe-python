@@ -68,9 +68,42 @@ class TestBoard(unittest.TestCase):
 
     def test_undo_move(self):
         pass
+    
     # -------------------------- Valid Moves ------------------------------------
     def test_is_valid_move(self):
-        pass
+        """
+        Tests a correct move (within bounds and on an empty cell).
+        """
+        # all of the cells in self.board are empty (contain '?') on setUp.
+        
+        # define the test move
+        test_move = (0, 0)
+
+        self.assertTrue(self.board.is_valid_move(test_move[0], test_move[1]))
+
+    def test_is_not_valid_move_filled_cell(self):
+        """
+        Tests an incorrect move (on a filled cell).
+        """
+        # mark a cell on self.board as filled
+        self.board.place_mark(0, 0, "X")
+
+        # define the test move on the same marked row and column above
+        test_move = (0, 0)
+
+        self.assertFalse(self.board.is_valid_move(test_move[0], test_move[1]))
+
+    def test_is_not_valid_move_oob(self):
+        """
+        Tests an incorrect move (out of bounds).
+        """
+        # define list of test moves to be outside the 3 x 3 board
+        # row index, column index
+        test_moves = [(-1, -1), (4, 4), (7, -2), (float("-inf"), float("inf"))]
+
+        for row, col in test_moves:
+            self.assertFalse(self.board.is_valid_move(row, col), f"Assertion failed for test case: ({row, col})")
+    
     # -------------------------- Winner Checks ------------------------------------
     def test_check_winner(self):
         pass
