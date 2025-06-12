@@ -105,9 +105,93 @@ class TestBoard(unittest.TestCase):
             self.assertFalse(self.board.is_valid_move(row, col), f"Assertion failed for test case: ({row, col})")
     
     # -------------------------- Winner Checks ------------------------------------
-    def test_check_winner(self):
-        pass
+    def test_check_winner_X(self):
+        """
+        Test that correct winner is displayed.
+        Test for X.
+        """
 
+        # X should win in this scenario
+        self.board.place_mark(0, 0, "X")
+        self.board.place_mark(0, 1, "X")
+        self.board.place_mark(0, 2, "X")
+        self.board.place_mark(1, 1, "O")
+        self.board.place_mark(2, 2, "O")
+
+        # print out the board
+        print("")
+        print("---- X wins example: ----")
+        print(self.board)
+        print("")
+
+        self.assertEqual(self.board.check_winner(), "X")
+
+    def test_check_winner_O(self):
+        """
+        Test that correct winner is displayed.
+        Test for O.
+        """
+        # O should win in this scenario
+        self.board.place_mark(0, 0, "O")
+        self.board.place_mark(0, 1, "O")
+        self.board.place_mark(0, 2, "O")
+        self.board.place_mark(1, 1, "X")
+        self.board.place_mark(2, 2, "X")
+
+        # print out the board
+        print("")
+        print("---- O wins example: ----")
+        print(self.board)
+        print("")
+
+        self.assertEqual(self.board.check_winner(), "O")
+
+    def test_check_winner_Draw(self):
+        """
+        Test that no winner is displayed (Game has come to a draw).
+        """
+
+        # should return None in this scenario
+        marks = ["O", "X", "O", "X", "X", "O", "X", "O", "X"]
+        
+        # track current mark position
+        position_mark = 0
+
+        # fill in the board
+        for i in range(len(self.board)):
+            for j in range(len(self.board[0])):
+                self.board.place_mark(i, j, marks[position_mark])
+                position_mark += 1
+        
+        self.assertEqual(self.board.check_winner(), None)
+        
+        # print out the board
+        print("")
+        print("---- Draw example: ----")
+        print(self.board)
+        print("")
+
+        self.assertEqual(self.board.check_winner(), None)
+
+    def test_check_winner_in_progress(self):
+        """
+        Test that no winner is displayed (Game is still in progress).
+        """
+
+        # should return None in this scenario
+
+        self.board.place_mark(0, 0, "X")
+        self.board.place_mark(1, 1, "O")
+        self.board.place_mark(2, 2, "X")
+        self.board.place_mark(1, 0, "O")
+
+        # print out the board
+        print("")
+        print("---- Winner in progress example: ----")
+        print(self.board)
+        print("")
+
+        self.assertEqual(self.board.check_winner(), None)
     # -------------------------- Game State ------------------------------------
     def test_current_game_state_won(self):
         """
