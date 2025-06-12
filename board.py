@@ -2,6 +2,11 @@ class Board:
     def __init__(self):
         self.board = [["?" for _ in range(3)] for _ in range(3)]
 
+    def __len__(self):
+        """
+        Allow for direct len call on the Board Object.
+        """
+        return len(self.board)
     # -------------------------- Displays ------------------------------------
 
     def __str__(self):
@@ -77,16 +82,62 @@ class Board:
         return True
 
     # -------------------------- Winner Checks ------------------------------------
+    def _check_winner(self, mark: str):
+        """
+        Private function to actually do the work.
+        Check for each row, column, left diagonal, and right diagonal.
+
+        mark: the player that we are currently checking for. Either "X" or "O".
+        """
+
+        # used to check
+        comparator = [mark] * 3
+
+        print(comparator)
+        # check each row
+        for row in self.board:
+            if row == comparator:
+                return True
+        
+        # check each column
+
+        for column in range(len(self.board)):
+            column_values = [self.board[row][column] for row in range(len(self.board))]
+            if column_values == comparator:
+                return True
+        
+        # check left diagonal
+        left_diagonal = [self.board[row][row] for row in range(len(self.board))]
+        if left_diagonal == comparator:
+            return True
+
+        # check right diagonal
+        right_diagonal = [self.board[row][len(self.board) - 1 - row] for row in range(len(self.board))]
+        if right_diagonal == comparator:
+            return True
+        
+        # no winner has been found for the mark parameter
+        return None
     def check_winner(self):
         """
         Check if there a winner (return "X", "O", or None).
         """
-        pass
+        
+        # check if X won
+        if self._check_winner("X"):
+            return "X"
+        # check if O won
+        elif self._check_winner("O"):
+            return "O"
+        # if none of the above is true then either draw
+        # or game is still in progress.
+        # regardless, return None
+        return None
 
     # -------------------------- Game State ------------------------------------
     def current_game_state(self):
         """
-        Returns a status like "X wins", "0 wins", "Draw", or "In Progress".
+        Returns a status like "X wins", "O wins", "Draw", or "In Progress".
         """
         pass
 
