@@ -37,19 +37,26 @@ class Board:
         """
         Reset the board to all "?" or empty marks.
         """
-        pass
+        self.board = [["?" for _ in range(3)] for _ in range(3)]
 
     def get_empty_cells(self):
         """
         Returns a list of (row, col) tuples for available moves.
         """
-        pass
+        empty_cells = [(i, j) for i in range(len(self.board)) for j in range(len(self.board[0])) if self.board[i][j] == "?"]
+
+        return empty_cells
 
     def is_full(self):
         """
         Returns True if all cells are filled.
         """
-        pass
+        for i in range(len(self.board)):
+            for j in range(len(self.board[1])):
+                if self.board[i][j] == "?":
+                    return False
+        
+        return True
 
     def copy(self):
         """

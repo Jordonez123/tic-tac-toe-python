@@ -55,13 +55,51 @@ class TestBoard(unittest.TestCase):
         self.assertEqual(str(context.exception), "Cannot use an invalid mark on the board.")
     # -------------------------- Board Utilities ------------------------------------
     def test_reset_(self):
-        pass
+        # fill in the board
+        marks = ["O", "X", "O", "X", "X", "O", "X", "O", "X"]
+        # keep track of the current mark being filled in
+        position_mark = 0
+
+        for i in range(len(self.board)):
+            for j in range(len(self.board[0])):
+                self.board.place_mark(i, j, marks[position_mark])
+                position_mark += 1
+        
+        # when board resets all fields should be empty
+        test_board = "? | ? | ?\n? | ? | ?\n? | ? | ?"
+        
+        # reset the board
+        self.board.reset()
+
+        self.assertEqual(str(self.board), test_board)
 
     def test_get_empty_cells(self):
-        pass
+        self.board.place_mark(0, 0, "O")
+        self.board.place_mark(0, 1, "X")
+        self.board.place_mark(0, 2, "O")
+        self.board.place_mark(1, 0, "X")
+        self.board.place_mark(1, 1, "X")
+        self.board.place_mark(1, 2, "O")
+        self.board.place_mark(2, 0, "X")
+        # test should return list [(2, 1), (2, 2)]
+        self.assertEqual(self.board.get_empty_cells(), [(2, 1), (2, 2)])
 
     def test_is_full(self):
-        pass
+        # fill in the board
+        marks = ["O", "X", "O", "X", "X", "O", "X", "O", "X"]
+        # keep track of the current mark being filled in
+        position_mark = 0
+
+        for i in range(len(self.board)):
+            for j in range(len(self.board[0])):
+                self.board.place_mark(i, j, marks[position_mark])
+                position_mark += 1
+        
+        self.assertTrue(self.board.is_full())
+
+    def test_is_not_full(self):
+        # board is already empty just test if return value is False
+        self.assertFalse(self.board.is_full())
 
     def test_copy(self):
         pass
