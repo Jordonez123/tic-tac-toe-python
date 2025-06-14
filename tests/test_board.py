@@ -55,19 +55,80 @@ class TestBoard(unittest.TestCase):
         self.assertEqual(str(context.exception), "Cannot use an invalid mark on the board.")
     # -------------------------- Board Utilities ------------------------------------
     def test_reset_(self):
-        pass
+        # fill in the board
+        marks = ["O", "X", "O", "X", "X", "O", "X", "O", "X"]
+        # keep track of the current mark being filled in
+        position_mark = 0
+
+        for i in range(len(self.board)):
+            for j in range(len(self.board[0])):
+                self.board.place_mark(i, j, marks[position_mark])
+                position_mark += 1
+        
+        # when board resets all fields should be empty
+        test_board = "? | ? | ?\n? | ? | ?\n? | ? | ?"
+        
+        # reset the board
+        self.board.reset()
+
+        self.assertEqual(str(self.board), test_board)
 
     def test_get_empty_cells(self):
-        pass
+        self.board.place_mark(0, 0, "O")
+        self.board.place_mark(0, 1, "X")
+        self.board.place_mark(0, 2, "O")
+        self.board.place_mark(1, 0, "X")
+        self.board.place_mark(1, 1, "X")
+        self.board.place_mark(1, 2, "O")
+        self.board.place_mark(2, 0, "X")
+        # test should return list [(2, 1), (2, 2)]
+        self.assertEqual(self.board.get_empty_cells(), [(2, 1), (2, 2)])
 
     def test_is_full(self):
-        pass
+        # fill in the board
+        marks = ["O", "X", "O", "X", "X", "O", "X", "O", "X"]
+        # keep track of the current mark being filled in
+        position_mark = 0
+
+        for i in range(len(self.board)):
+            for j in range(len(self.board[0])):
+                self.board.place_mark(i, j, marks[position_mark])
+                position_mark += 1
+        
+        self.assertTrue(self.board.is_full())
+
+    def test_is_not_full(self):
+        # board is already empty just test if return value is False
+        self.assertFalse(self.board.is_full())
 
     def test_copy(self):
-        pass
+        """
+        Tests making a deep copy.
+        Calls self.board.copy() and stores it as copied_board.
+        Makes changes to the original board.
+        Check that self.board is not equal to copied_board.
+        Check that all values in copied_board have remained the same.
+        """
+        # returns the copied board
+        copied_board = self.board.copy()
+
+        # make changes to self.board
+        self.board.place_mark(0, 0, "X")
+        self.board.place_mark(1, 1, "O")
+        self.board.place_mark(2, 2, "X")
+
+        # check copied board and original board not the same
+        self.assertNotEqual(str(copied_board), str(self.board))
+
+        self.assertEqual(str(copied_board), "? | ? | ?\n? | ? | ?\n? | ? | ?")
 
     def test_undo_move(self):
-        pass
+        # add a mark to the board
+        self.board.place_mark(0, 0, "X")
+        # call the undo method on the board object
+        self.board.undo_move(0, 0)
+
+        self.assertEqual(str(self.board), "? | ? | ?\n? | ? | ?\n? | ? | ?")
     
     # -------------------------- Valid Moves ------------------------------------
     def test_is_valid_move(self):
@@ -118,12 +179,6 @@ class TestBoard(unittest.TestCase):
         self.board.place_mark(1, 1, "O")
         self.board.place_mark(2, 2, "O")
 
-        # print out the board
-        print("")
-        print("---- X wins example: ----")
-        print(self.board)
-        print("")
-
         self.assertEqual(self.board.check_winner(), "X")
 
     def test_check_winner_O(self):
@@ -137,12 +192,6 @@ class TestBoard(unittest.TestCase):
         self.board.place_mark(0, 2, "O")
         self.board.place_mark(1, 1, "X")
         self.board.place_mark(2, 2, "X")
-
-        # print out the board
-        print("")
-        print("---- O wins example: ----")
-        print(self.board)
-        print("")
 
         self.assertEqual(self.board.check_winner(), "O")
 
@@ -164,12 +213,6 @@ class TestBoard(unittest.TestCase):
                 position_mark += 1
         
         self.assertEqual(self.board.check_winner(), None)
-        
-        # print out the board
-        print("")
-        print("---- Draw example: ----")
-        print(self.board)
-        print("")
 
         self.assertEqual(self.board.check_winner(), None)
 
@@ -184,12 +227,6 @@ class TestBoard(unittest.TestCase):
         self.board.place_mark(1, 1, "O")
         self.board.place_mark(2, 2, "X")
         self.board.place_mark(1, 0, "O")
-
-        # print out the board
-        print("")
-        print("---- Winner in progress example: ----")
-        print(self.board)
-        print("")
 
         self.assertEqual(self.board.check_winner(), None)
     # -------------------------- Game State ------------------------------------

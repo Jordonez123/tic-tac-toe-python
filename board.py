@@ -7,6 +7,19 @@ class Board:
         Allow for direct len call on the Board Object.
         """
         return len(self.board)
+    
+    def __eq__(self, other):
+        """
+        Compares two board objects.
+        Return False if the other element is not of instance Board.
+        Return True if boards have same elements in the same positions.
+        Return False otherwise.
+        """
+        # make sure we're comparing two Board objects
+        if not isinstance(other, Board):
+            return False
+        # use Python's list comparison, element wise
+        return self.board == other.board
     # -------------------------- Displays ------------------------------------
 
     def __str__(self):
@@ -37,33 +50,58 @@ class Board:
         """
         Reset the board to all "?" or empty marks.
         """
-        pass
+        self.board = [["?" for _ in range(3)] for _ in range(3)]
 
     def get_empty_cells(self):
         """
         Returns a list of (row, col) tuples for available moves.
         """
-        pass
+        empty_cells = [(i, j) for i in range(len(self.board)) for j in range(len(self.board[0])) if self.board[i][j] == "?"]
+
+        return empty_cells
 
     def is_full(self):
         """
         Returns True if all cells are filled.
         """
-        pass
+        for i in range(len(self.board)):
+            for j in range(len(self.board[1])):
+                if self.board[i][j] == "?":
+                    return False
+        
+        return True
 
     def copy(self):
         """
         Return a deep copy of the board.
         Useful for AI testing.
         """
-        pass
+        n = len(self.board)
+        copied_board = Board()
 
-    def undo_move(row: int, col: int):
+        for i in range(n):
+            for j in range(n):
+                copied_board[i][j] = self.board[i][j]
+
+        return copied_board
+
+    def undo_move(self, row: int, col: int):
         """
         Remove a mark.
         Good for bactracking in AI or testing.
+        Return True if successful.
+        Return False if unsuccessful.
         """
-    
+        n = len(self.board)
+        # check requested undo within bounds
+        if not 0 <= row <= n and not 0 <= col <= n:
+            return False
+        
+        # mark requested cell as empty
+        self.board[row][col] = "?"
+        return True
+
+
     # -------------------------- Valid Moves ------------------------------------
     def is_valid_move(self, row: int, col: int):
         """
@@ -93,7 +131,6 @@ class Board:
         # used to check
         comparator = [mark] * 3
 
-        print(comparator)
         # check each row
         for row in self.board:
             if row == comparator:
