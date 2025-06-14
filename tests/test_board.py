@@ -120,11 +120,15 @@ class TestBoard(unittest.TestCase):
         # check copied board and original board not the same
         self.assertNotEqual(str(copied_board), str(self.board))
 
-        print(isinstance(copied_board, Board))
         self.assertEqual(str(copied_board), "? | ? | ?\n? | ? | ?\n? | ? | ?")
 
     def test_undo_move(self):
-        pass
+        # add a mark to the board
+        self.board.place_mark(0, 0, "X")
+        # call the undo method on the board object
+        self.board.undo_move(0, 0)
+
+        self.assertEqual(str(self.board), "? | ? | ?\n? | ? | ?\n? | ? | ?")
     
     # -------------------------- Valid Moves ------------------------------------
     def test_is_valid_move(self):
@@ -175,12 +179,6 @@ class TestBoard(unittest.TestCase):
         self.board.place_mark(1, 1, "O")
         self.board.place_mark(2, 2, "O")
 
-        # print out the board
-        print("")
-        print("---- X wins example: ----")
-        print(self.board)
-        print("")
-
         self.assertEqual(self.board.check_winner(), "X")
 
     def test_check_winner_O(self):
@@ -194,12 +192,6 @@ class TestBoard(unittest.TestCase):
         self.board.place_mark(0, 2, "O")
         self.board.place_mark(1, 1, "X")
         self.board.place_mark(2, 2, "X")
-
-        # print out the board
-        print("")
-        print("---- O wins example: ----")
-        print(self.board)
-        print("")
 
         self.assertEqual(self.board.check_winner(), "O")
 
@@ -221,12 +213,6 @@ class TestBoard(unittest.TestCase):
                 position_mark += 1
         
         self.assertEqual(self.board.check_winner(), None)
-        
-        # print out the board
-        print("")
-        print("---- Draw example: ----")
-        print(self.board)
-        print("")
 
         self.assertEqual(self.board.check_winner(), None)
 
@@ -241,12 +227,6 @@ class TestBoard(unittest.TestCase):
         self.board.place_mark(1, 1, "O")
         self.board.place_mark(2, 2, "X")
         self.board.place_mark(1, 0, "O")
-
-        # print out the board
-        print("")
-        print("---- Winner in progress example: ----")
-        print(self.board)
-        print("")
 
         self.assertEqual(self.board.check_winner(), None)
     # -------------------------- Game State ------------------------------------

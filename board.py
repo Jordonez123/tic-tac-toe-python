@@ -85,12 +85,23 @@ class Board:
 
         return copied_board
 
-    def undo_move(row: int, col: int):
+    def undo_move(self, row: int, col: int):
         """
         Remove a mark.
         Good for bactracking in AI or testing.
+        Return True if successful.
+        Return False if unsuccessful.
         """
-    
+        n = len(self.board)
+        # check requested undo within bounds
+        if not 0 <= row <= n and not 0 <= col <= n:
+            return False
+        
+        # mark requested cell as empty
+        self.board[row][col] = "?"
+        return True
+
+
     # -------------------------- Valid Moves ------------------------------------
     def is_valid_move(self, row: int, col: int):
         """
@@ -120,7 +131,6 @@ class Board:
         # used to check
         comparator = [mark] * 3
 
-        print(comparator)
         # check each row
         for row in self.board:
             if row == comparator:
