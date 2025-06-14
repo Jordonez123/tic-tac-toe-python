@@ -7,6 +7,19 @@ class Board:
         Allow for direct len call on the Board Object.
         """
         return len(self.board)
+    
+    def __eq__(self, other):
+        """
+        Compares two board objects.
+        Return False if the other element is not of instance Board.
+        Return True if boards have same elements in the same positions.
+        Return False otherwise.
+        """
+        # make sure we're comparing two Board objects
+        if not isinstance(other, Board):
+            return False
+        # use Python's list comparison, element wise
+        return self.board == other.board
     # -------------------------- Displays ------------------------------------
 
     def __str__(self):
@@ -63,7 +76,14 @@ class Board:
         Return a deep copy of the board.
         Useful for AI testing.
         """
-        pass
+        n = len(self.board)
+        copied_board = Board()
+
+        for i in range(n):
+            for j in range(n):
+                copied_board[i][j] = self.board[i][j]
+
+        return copied_board
 
     def undo_move(row: int, col: int):
         """

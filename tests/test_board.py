@@ -102,7 +102,26 @@ class TestBoard(unittest.TestCase):
         self.assertFalse(self.board.is_full())
 
     def test_copy(self):
-        pass
+        """
+        Tests making a deep copy.
+        Calls self.board.copy() and stores it as copied_board.
+        Makes changes to the original board.
+        Check that self.board is not equal to copied_board.
+        Check that all values in copied_board have remained the same.
+        """
+        # returns the copied board
+        copied_board = self.board.copy()
+
+        # make changes to self.board
+        self.board.place_mark(0, 0, "X")
+        self.board.place_mark(1, 1, "O")
+        self.board.place_mark(2, 2, "X")
+
+        # check copied board and original board not the same
+        self.assertNotEqual(str(copied_board), str(self.board))
+
+        print(isinstance(copied_board, Board))
+        self.assertEqual(str(copied_board), "? | ? | ?\n? | ? | ?\n? | ? | ?")
 
     def test_undo_move(self):
         pass
