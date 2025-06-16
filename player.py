@@ -1,4 +1,5 @@
 from player_abc import Player
+from board import Board
 
 class PlayerImpl(Player):
     def __init__(self, name):
