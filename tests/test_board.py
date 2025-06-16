@@ -214,8 +214,6 @@ class TestBoard(unittest.TestCase):
         
         self.assertEqual(self.board.check_winner(), None)
 
-        self.assertEqual(self.board.check_winner(), None)
-
     def test_check_winner_in_progress(self):
         """
         Test that no winner is displayed (Game is still in progress).
@@ -232,36 +230,79 @@ class TestBoard(unittest.TestCase):
     # -------------------------- Game State ------------------------------------
     def test_current_game_state_won(self):
         """
-        Game state is returned as "X wins or O wins."
+        Game state is returned as "X wins"
         """
-        pass
+        # X should win in this scenario
+        self.board.place_mark(0, 0, "X")
+        self.board.place_mark(0, 1, "X")
+        self.board.place_mark(0, 2, "X")
+        self.board.place_mark(1, 1, "O")
+        self.board.place_mark(2, 2, "O")
+
+        self.assertEqual(self.board.current_game_state(), "X wins")
 
     def test_current_game_state_draw(self):
         """
         Game state is returned as "Draw."
         """
-        pass
+        # should return None in this scenario
+        marks = ["O", "X", "O", "X", "X", "O", "X", "O", "X"]
+        
+        # track current mark position
+        position_mark = 0
+
+        # fill in the board
+        for i in range(len(self.board)):
+            for j in range(len(self.board[0])):
+                self.board.place_mark(i, j, marks[position_mark])
+                position_mark += 1
+        
+        self.assertEqual(self.board.current_game_state(), "Draw")
 
     def test_current_game_state_in_progress(self):
         """
         Game state is returned as "In Progress."
         """
-        pass
+
+        # should return None in this scenario
+        self.board.place_mark(0, 0, "X")
+        self.board.place_mark(1, 1, "O")
+        self.board.place_mark(2, 2, "X")
+        self.board.place_mark(1, 0, "O")
+        
+        self.assertEqual(self.board.current_game_state(), "In Progress")
 
     def test_is_game_over_won(self):
         """
         Test if current game has concluded. Check when someone has won.
         """
-        pass
+        # X should win in this scenario
+        self.board.place_mark(0, 0, "X")
+        self.board.place_mark(0, 1, "X")
+        self.board.place_mark(0, 2, "X")
+        self.board.place_mark(1, 1, "O")
+        self.board.place_mark(2, 2, "O")
+        
+        self.assertTrue(self.board.is_game_over())
 
     def test_is_game_over_board_full(self):
         """
         Test if current game has concluded. Check when all the cells in the
         3 x 3 board are filled.
         """
-        pass
+        # filling up board but no winner
+        marks = ["O", "X", "O", "X", "X", "O", "X", "O", "X"]
+        
+        # track current mark position
+        position_mark = 0
 
+        # fill in the board
+        for i in range(len(self.board)):
+            for j in range(len(self.board[0])):
+                self.board.place_mark(i, j, marks[position_mark])
+                position_mark += 1
 
+        self.assertTrue(self.board.is_game_over())
 
 if __name__ == "__main__":
     unittest.main()
