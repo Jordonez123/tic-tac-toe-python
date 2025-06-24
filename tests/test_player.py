@@ -1,6 +1,5 @@
 import unittest
 from player import PlayerImpl
-from board import Board
 
 class TestPlayer(unittest.TestCase):
 
