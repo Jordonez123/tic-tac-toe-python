@@ -13,18 +13,30 @@ class Game:
         self.player2.player_id = player2_order
     
     def play_game(self):
-        # ask players for their names and assign playing order
+        # Ask players for their names and assign playing order
         self.set_up_players()
         # main game loop
         while True:
-            # ask player 1 for their move
-            player1_move = input("Player 1, what is your move?: ")
-            # add player1's move to the board
-            # check for a winner
-                # if yes, update self.game_winner and break the loop
-            # ask player 2 for their move
-            # check for a winner
-                # if yes, update self.game_winner and break the loop
+            # Ask player 1 for their move
+            player1_move_row, player1_move_column = self.get_player_move()
+            # Add player 1 move to the board
+            self.player1.make_move(player1_move_row, player1_move_column, self.board)
+            # Check for a winner
+            winner_check = self.board.check_winner()
+            # If yes, update self.game_winner and break the loop
+            if winner_check:
+                    self.game_winner = winner_check
+                    break
+            # Ask player 2 for their move
+            player2_move_row, player2_move_column = self.get_player_move()
+            # Add player 2 move to the board
+            self.player2.make_move(player2_move_row, player2_move_column, self.board)
+            # Check for a winner
+            winner_check = self.board.check_winner()
+            # If yes, update self.game_winner and break the loop
+            if winner_check:
+                 self.game_winner = winner_check
+                 break
 
     def get_game_winner(self) -> PlayerImpl:
         return self.game_winner
