@@ -77,11 +77,11 @@ class PlayerImpl(Player):
         row_position = row_mapping[row_string]
         column_position = column_mapping[column_string]
 
-        # Ask the board if the move is valid.
+        # Ask the board if the move is valid
         if not board.is_valid_move(row_position, column_position):
             raise ValueError(f"Cell ({row_position}, {column_position}) is not a valid move.")
         
-        # Place the mark on the board.
+        # Place the mark on the board
         board.place_mark(row_position, column_position, self.player_icon)
         
         # Call the make_move function with correct row and column positions
