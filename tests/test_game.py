@@ -20,9 +20,11 @@ class TestGame(unittest.TestCase):
 
 # -------------------------- Player functionality ------------------------------------
     def test_get_player_move(self):
+        print("--------test_get_player_move--------")
         self.assertEqual(self.game.get_player_move(), ("top", "left"))
     
     def test_set_up_players(self):
+        print("--------test_set_up_players--------")
         self.game.set_up_players()
 
         self.assertEqual(self.game.player1.name, "Jordan")
@@ -36,7 +38,7 @@ class TestGame(unittest.TestCase):
     @patch("builtins.input")
     @patch("builtins.print")  # suppress prints
     def test_play_game_x_wins_top_row(self, mock_print, mock_input):
-
+        print("--------test_play_game_x_wins_top_row(game mocked)--------")
         # Mock inputs:
         # Player 1 name, Player 2 name
         # Player 1 move: "top", "left"
@@ -69,7 +71,11 @@ class TestGame(unittest.TestCase):
             ["?", "?", "?"]
         ]
         self.assertEqual(self.game.board.board, expected_board)
-
+    
+    def test_get_game_winner(self):
+        print("----test_get_game_winner(playing an actual game)--------")
+        self.game.play_game()
+        self.assertEqual(self.game.get_game_winner(), "X")
 
 if __name__ == "__main__":
     unittest.main()
