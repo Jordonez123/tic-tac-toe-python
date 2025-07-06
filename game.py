@@ -52,6 +52,8 @@ class Game:
             # If yes, then get the status code of the game
             # There is a clear winner or a draw
             # If not, then just continue the loop
+            if self.board.is_game_over():
+                game_status_code = self.board.current_game_state()                
 
     def get_game_winner(self) -> PlayerImpl:
         return self.game_winner
