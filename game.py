@@ -8,7 +8,7 @@ class Game:
         self.board = board
         self.game_winner = None
 
-    def set_up_players(self):
+    def set_up_players(self) -> None:
         # Ask player 1 for name and assign playing order
         player1_name = input("Player 1 Name: ")
         self.player1.set_player_id(0)
@@ -28,7 +28,20 @@ class Game:
         player_move_column = input("Please enter the column position: ")
         return (player_move_row, player_move_column)
     
-    def play_game(self):
+    def process_game_over(self) -> None:
+        # Check if the game is over
+        # If yes, then get the status code of the game
+        # There is a clear winner or a draw
+        game_status_code = self.board.current_game_state()
+        # Update self.game.winner
+        if game_status_code == "X wins":
+            self.game_winner = "X"
+        elif game_status_code == "O wins":
+            self.game_winner = "O"
+        else:
+            self.game_winner = "Draw"
+
+    def play_game(self) -> None:
         # Ask players for their names and assign playing order
         self.set_up_players()
         # main game loop
@@ -38,20 +51,8 @@ class Game:
             # Add player 1 move to the board
             self.player1.make_move((player1_move_row, player1_move_column), self.board)
             
-            # Check if the game is over
-            # If yes, then get the status code of the game
-            # There is a clear winner or a draw
-            # If not, then just continue the loop
             if self.board.is_game_over():
-                game_status_code = self.board.current_game_state()
-                # Update self.game.winner
-                if game_status_code == "X wins":
-                    self.game_winner = "X"
-                elif game_status_code == "O wins":
-                    self.game_winner = "O"
-                else:
-                    self.game_winner = "Draw"
-
+                self.process_game_over()
                 # Stop the game
                 break
             
@@ -60,24 +61,12 @@ class Game:
             # Add player 2 move to the board
             self.player2.make_move((player2_move_row, player2_move_column), self.board)
             
-            # Check if the game is over
-            # If yes, then get the status code of the game
-            # There is a clear winner or a draw
-            # If not, then just continue the loop
             if self.board.is_game_over():
-                game_status_code = self.board.current_game_state()
-                # Update self.game.winner
-                if game_status_code == "X wins":
-                    self.game_winner = "X"
-                elif game_status_code == "O wins":
-                    self.game_winner = "O"
-                else:
-                    self.game_winner = "Draw"
-
+                self.process_game_over()
                 # Stop the game
                 break
                     
-    def get_game_winner(self) -> PlayerImpl:
+    def get_game_winner(self) -> str:
         return self.game_winner
 
     def _get_game_captions(self):
