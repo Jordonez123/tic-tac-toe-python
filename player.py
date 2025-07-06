@@ -2,10 +2,10 @@ from player_abc import Player
 from board import Board
 
 class PlayerImpl(Player):
-    def __init__(self, name):
+    def __init__(self, name: str):
         super().__init__(name)
     
-    def set_player_id(self, ID):
+    def set_player_id(self, ID: int) -> None:
         if self.player_id is None:
             if ID is None:
                 raise ValueError("Cannot assign an empty or NULL player ID.")
@@ -15,7 +15,7 @@ class PlayerImpl(Player):
         else:
             raise ValueError("Cannot overwrite previosuly assigned player ID.")
             
-    def set_player_icon(self, icon: str):
+    def set_player_icon(self, icon: str) -> None:
         # Check that player ID is already set
         if self.player_id is not None:
             # Player icon has not been set already
