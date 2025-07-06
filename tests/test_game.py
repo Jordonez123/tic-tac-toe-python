@@ -6,8 +6,8 @@ from player import PlayerImpl
 class TestGame(unittest.TestCase):
     # -------------------------- Set Up and Tear Down ------------------------------------
     def setUp(self):
-        self.player1 = PlayerImpl("Jordan")
-        self.player2 = PlayerImpl("Jennifer")
+        self.player1 = PlayerImpl("")
+        self.player2 = PlayerImpl("")
         self.board = Board()
         self.game = Game(self.player1, self.player2, self.board)
 
@@ -17,12 +17,21 @@ class TestGame(unittest.TestCase):
         self.board = None
         self.game = None
 
-    def test_set_player_order(self):
-        # player 1 goes first
-        # player 2 goes second
-        self.game.set_player_order(0, 1)
-        self.assertEqual(self.player1.player_id, 0)
-        self.assertEqual(self.player2.player_id, 1)
+# -------------------------- Player functionality ------------------------------------
+    def test_get_player_move(self):
+        self.assertEqual(self.game.get_player_move(), ("top", "left"))
+    
+    def test_set_up_players(self):
+        self.game.set_up_players()
+
+        self.assertEqual(self.game.player1.name, "Jordan")
+        self.assertEqual(self.game.player1.player_id, 0)
+        self.assertEqual(self.game.player1.player_icon, "X")
+
+        self.assertEqual(self.game.player2.name, "Jennifer")
+        self.assertEqual(self.game.player2.player_id, 1)
+        self.assertEqual(self.game.player2.player_icon, "O")
+
 
 if __name__ == "__main__":
     unittest.main()
