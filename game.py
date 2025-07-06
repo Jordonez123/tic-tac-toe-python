@@ -47,12 +47,11 @@ class Game:
             player2_move_row, player2_move_column = self.get_player_move()
             # Add player 2 move to the board
             self.player2.make_move(player2_move_row, player2_move_column, self.board)
-            # Check for a winner
-            winner_check = self.board.check_winner()
-            # If yes, update self.game_winner and break the loop
-            if winner_check:
-                 self.game_winner = winner_check
-                 break
+            
+            # Check if the game is over
+            # If yes, then get the status code of the game
+            # There is a clear winner or a draw
+            # If not, then just continue the loop
 
     def get_game_winner(self) -> PlayerImpl:
         return self.game_winner

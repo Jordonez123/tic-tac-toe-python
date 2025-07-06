@@ -174,7 +174,7 @@ class Board:
     # -------------------------- Game State ------------------------------------
     def current_game_state(self):
         """
-        Returns a status like "X wins", "O wins", "Draw", or "In Progress".
+        Returns a status like "X wins", "O wins", "Draw".
         """
         # check for winners
         winner = self.check_winner()
@@ -183,11 +183,9 @@ class Board:
         elif winner == "O":
             return "O wins"
         # check for draws
-        elif self.is_full():
-            return "Draw"
-        # check for in progress
         else:
-            return "In Progress" 
+            return "Draw"
+       
     def is_game_over(self):
         """
         True if either someone won or the board is full.
