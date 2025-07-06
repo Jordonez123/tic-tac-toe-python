@@ -2,6 +2,7 @@ import unittest
 from board import Board
 from game import Game
 from player import PlayerImpl
+from unittest.mock import MagicMock, patch
 
 class TestGame(unittest.TestCase):
     # -------------------------- Set Up and Tear Down ------------------------------------
@@ -31,6 +32,43 @@ class TestGame(unittest.TestCase):
         self.assertEqual(self.game.player2.name, "Jennifer")
         self.assertEqual(self.game.player2.player_id, 1)
         self.assertEqual(self.game.player2.player_icon, "O")
+    
+    @patch("builtins.input")
+    @patch("builtins.print")  # suppress prints
+    def test_play_game_x_wins_top_row(self, mock_print, mock_input):
+
+        # Mock inputs:
+        # Player 1 name, Player 2 name
+        # Player 1 move: "top", "left"
+        # Player 2 move: "middle", "left"
+        # Player 1 move: "top", "middle"
+        # Player 2 move: "middle", "middle"
+        # Player 1 move: "top", "right" (winning move)
+        mock_input.side_effect = [
+            "Alice", "Bob",          # player names
+            "top", "left",           # player 1
+            "middle", "left",        # player 2
+            "top", "middle",         # player 1
+            "middle", "middle",      # player 2
+            "top", "right"           # player 1 (wins)
+        ]
+
+        # Act
+        self.game.play_game()
+
+        # Assert
+        self.assertEqual(self.game.game_winner, "X")
+        # Board should reflect:
+        # X | X | X
+        # O | O | ?
+        # ? | ? | ?
+
+        expected_board = [
+            ["X", "X", "X"],
+            ["O", "O", "?"],
+            ["?", "?", "?"]
+        ]
+        self.assertEqual(self.game.board.board, expected_board)
 
 
 if __name__ == "__main__":
