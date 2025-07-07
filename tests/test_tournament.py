@@ -1,4 +1,5 @@
 import unittest
+from tournament import Tournament
 from player import PlayerImpl
 from game import Game
 from board import Board
@@ -10,6 +11,7 @@ class TestGame(unittest.TestCase):
         self.player2 = PlayerImpl("")
         self.board = Board()
         self.game = Game(self.player1, self.player2, self.board)
+        self.tournament = Tournament
 
     def tearDown(self):
         self.player1 = None
@@ -18,7 +20,7 @@ class TestGame(unittest.TestCase):
         self.game = None
     def test_set_up_players(self):
         print("--------test_set_up_players--------")
-        self.game.set_up_players()
+        self.tournament.set_up_players()
 
         self.assertEqual(self.game.player1.name, "Jordan")
         self.assertEqual(self.game.player1.player_id, 0)
@@ -27,3 +29,6 @@ class TestGame(unittest.TestCase):
         self.assertEqual(self.game.player2.name, "Jennifer")
         self.assertEqual(self.game.player2.player_id, 1)
         self.assertEqual(self.game.player2.player_icon, "O")
+
+if __name__ == "__main__":
+    unittest.main()

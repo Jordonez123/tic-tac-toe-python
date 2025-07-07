@@ -1,13 +1,16 @@
 from game import Game
-from player_abc import Player
+from player import PlayerImpl
+from board import Board
 from collections import defaultdict
 
 class Tournament:
-    def __init__(self):
+    def __init__(self, player1: PlayerImpl, player2: PlayerImpl):
         self.number_of_games = None
         self.tournament_ended = False
         self.tournament_winner = None
-        self.player_scores = defaultdict(int)
+        self.player1 = player1
+        self.player2 = player2
+        self.player_scores = defaultdict(int) # {name: score}
 
     def set_up_players(self) -> None:
         # Ask player 1 for name and assign playing order
@@ -22,13 +25,30 @@ class Tournament:
         self.player1.set_player_icon("X")
         self.player2.set_player_icon("O")
 
-    def create_new_game(self, player1: Player, player2: Player):
-        pass
+    def _create_new_game(self) -> Game:
+        # Create a new board
+        new_board = Board()
+        # Create a new game and pass in the players and new board
+        new_game = Game(self.player1, self.player2, new_board)
+        
+        # Return the new game
+        return new_game
     
     def start_tournament(self):
-        pass
+        # Get a new game
+        clean_game = self._create_new_game()
+        
+        # Main loop, for a tournament of 3 games
+        for _ in range(3):
+            # Play the game
+            clean_game.play_game()
+            # Get the winner
+            winner = clean_game.get_game_winner
+            
 
-    def get_tournament_winner(self) -> Player:
+        
+
+    def get_tournament_winner(self) -> PlayerImpl:
         return self.tournament_winner
     
     def display_tournament_winner(self) -> str:

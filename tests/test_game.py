@@ -7,8 +7,15 @@ from unittest.mock import MagicMock, patch
 class TestGame(unittest.TestCase):
     # -------------------------- Set Up and Tear Down ------------------------------------
     def setUp(self):
-        self.player1 = PlayerImpl("")
-        self.player2 = PlayerImpl("")
+        self.player1 = PlayerImpl("Jordan")
+        self.player2 = PlayerImpl("Jennifer")
+        
+        self.player1.set_player_id(0)
+        self.player1.set_player_icon("X")
+        
+        self.player2.set_player_id(0)
+        self.player2.set_player_icon("O")
+        
         self.board = Board()
         self.game = Game(self.player1, self.player2, self.board)
 
@@ -28,14 +35,12 @@ class TestGame(unittest.TestCase):
     def test_play_game_x_wins_top_row(self, mock_print, mock_input):
         print("--------test_play_game_x_wins_top_row(game mocked)--------")
         # Mock inputs:
-        # Player 1 name, Player 2 name
         # Player 1 move: "top", "left"
         # Player 2 move: "middle", "left"
         # Player 1 move: "top", "middle"
         # Player 2 move: "middle", "middle"
         # Player 1 move: "top", "right" (winning move)
         mock_input.side_effect = [
-            "Alice", "Bob",          # player names
             "top", "left",           # player 1
             "middle", "left",        # player 2
             "top", "middle",         # player 1
@@ -47,7 +52,7 @@ class TestGame(unittest.TestCase):
         self.game.play_game()
 
         # Assert
-        self.assertEqual(self.game.game_winner, "X")
+        self.assertEqual(self.game._game_winner.name, "Jordan")
         # Board should reflect:
         # X | X | X
         # O | O | ?
@@ -62,8 +67,9 @@ class TestGame(unittest.TestCase):
     
     def test_get_game_winner(self):
         print("----test_get_game_winner(playing an actual game)--------")
+        print(self.player1.name, self.player2.name)
         self.game.play_game()
-        self.assertEqual(self.game.get_game_winner(), "X")
+        self.assertEqual(self.game.get_game_winner().name, "Jordan")
 
 if __name__ == "__main__":
     unittest.main()
