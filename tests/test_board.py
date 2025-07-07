@@ -200,7 +200,7 @@ class TestBoard(unittest.TestCase):
         Test that no winner is displayed (Game has come to a draw).
         """
 
-        # should return None in this scenario
+        # should return False in this scenario
         marks = ["O", "X", "O", "X", "X", "O", "X", "O", "X"]
         
         # track current mark position
@@ -212,21 +212,8 @@ class TestBoard(unittest.TestCase):
                 self.board.place_mark(i, j, marks[position_mark])
                 position_mark += 1
         
-        self.assertEqual(self.board.check_winner(), None)
+        self.assertEqual(self.board.check_winner(), False)
 
-    def test_check_winner_in_progress(self):
-        """
-        Test that no winner is displayed (Game is still in progress).
-        """
-
-        # should return None in this scenario
-
-        self.board.place_mark(0, 0, "X")
-        self.board.place_mark(1, 1, "O")
-        self.board.place_mark(2, 2, "X")
-        self.board.place_mark(1, 0, "O")
-
-        self.assertEqual(self.board.check_winner(), None)
     # -------------------------- Game State ------------------------------------
     def test_current_game_state_won(self):
         """
@@ -258,19 +245,6 @@ class TestBoard(unittest.TestCase):
                 position_mark += 1
         
         self.assertEqual(self.board.current_game_state(), "Draw")
-
-    def test_current_game_state_in_progress(self):
-        """
-        Game state is returned as "In Progress."
-        """
-
-        # should return None in this scenario
-        self.board.place_mark(0, 0, "X")
-        self.board.place_mark(1, 1, "O")
-        self.board.place_mark(2, 2, "X")
-        self.board.place_mark(1, 0, "O")
-        
-        self.assertEqual(self.board.current_game_state(), "In Progress")
 
     def test_is_game_over_won(self):
         """

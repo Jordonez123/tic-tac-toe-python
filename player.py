@@ -1,10 +1,11 @@
 from player_abc import Player
+from board import Board
 
 class PlayerImpl(Player):
-    def __init__(self, name):
+    def __init__(self, name: str):
         super().__init__(name)
     
-    def set_player_id(self, ID):
+    def set_player_id(self, ID: int) -> None:
         if self.player_id is None:
             if ID is None:
                 raise ValueError("Cannot assign an empty or NULL player ID.")
@@ -14,7 +15,7 @@ class PlayerImpl(Player):
         else:
             raise ValueError("Cannot overwrite previosuly assigned player ID.")
             
-    def set_player_icon(self, icon: str):
+    def set_player_icon(self, icon: str) -> None:
         # Check that player ID is already set
         if self.player_id is not None:
             # Player icon has not been set already
@@ -31,7 +32,7 @@ class PlayerImpl(Player):
             raise ValueError("The player must have a valid player ID before attempting to assign a player icon.")
 
 
-    def make_move(self, move: tuple[str, str]) -> None:
+    def make_move(self, move: tuple[str, str], board: Board) -> None:
         """
         Function designed to check that the provided
         move is valid. Calls make_move() with the row and column
@@ -75,6 +76,13 @@ class PlayerImpl(Player):
         # Convert the move string into corresponding row and column indices
         row_position = row_mapping[row_string]
         column_position = column_mapping[column_string]
+
+        # Ask the board if the move is valid
+        if not board.is_valid_move(row_position, column_position):
+            raise ValueError(f"Cell ({row_position}, {column_position}) is not a valid move.")
+        
+        # Place the mark on the board
+        board.place_mark(row_position, column_position, self.player_icon)
         
         # Call the make_move function with correct row and column positions
         self._make_move(row_position, column_position)

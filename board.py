@@ -120,7 +120,7 @@ class Board:
         return True
 
     # -------------------------- Winner Checks ------------------------------------
-    def _check_winner(self, mark: str):
+    def _check_winner(self, mark: str) -> bool:
         """
         Private function to actually do the work.
         Check for each row, column, left diagonal, and right diagonal.
@@ -154,8 +154,8 @@ class Board:
             return True
         
         # no winner has been found for the mark parameter
-        return None
-    def check_winner(self):
+        return False
+    def check_winner(self) -> str:
         """
         Check if there a winner (return "X", "O", or None).
         """
@@ -169,12 +169,13 @@ class Board:
         # if none of the above is true then either draw
         # or game is still in progress.
         # regardless, return None
-        return None
+        return False
 
     # -------------------------- Game State ------------------------------------
-    def current_game_state(self):
+    def current_game_state(self) -> str:
         """
-        Returns a status like "X wins", "O wins", "Draw", or "In Progress".
+        Returns a status like "X wins", "O wins", "Draw".
+        Only gets called if the function is_game_over() returns True.
         """
         # check for winners
         winner = self.check_winner()
@@ -183,11 +184,9 @@ class Board:
         elif winner == "O":
             return "O wins"
         # check for draws
-        elif self.is_full():
-            return "Draw"
-        # check for in progress
         else:
-            return "In Progress" 
+            return "Draw"
+       
     def is_game_over(self):
         """
         True if either someone won or the board is full.

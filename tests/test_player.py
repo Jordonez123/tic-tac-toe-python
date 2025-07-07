@@ -1,5 +1,6 @@
 import unittest
 from player import PlayerImpl
+from board import Board
 
 class TestPlayer(unittest.TestCase):
 
@@ -10,12 +11,18 @@ class TestPlayer(unittest.TestCase):
         # Creates fresh player1 and player2 instances
         self.player1 = PlayerImpl("Jordan")
         self.player2 = PlayerImpl("Jennifer")
+
+        # Creates an instance of the board class
+        self.board = Board()
     
     def tearDown(self):
         # Runs after each test case
-        # sets both player1 and player2 instances to None
+        # Sets both player1 and player2 instances to None
         self.player1 = None
         self.player2 = None
+
+        # Set the board to none
+        self.board = None
     
     # -------------------------- Player Instance Variables ------------------------------------
     
@@ -173,7 +180,7 @@ class TestPlayer(unittest.TestCase):
             with self.subTest(bad_id=move):
                 # Expecting a Value Error exception for each invalid move
                 with self.assertRaises(ValueError) as context:
-                    self.player1.make_move(move)
+                    self.player1.make_move(move, self.board)
                 self.assertEqual(str(context.exception), expected_message)
 
     def test_player_cannot_make_move_without_id_assignment(self):
@@ -182,7 +189,7 @@ class TestPlayer(unittest.TestCase):
 
         # Expecting a ValueError Exception when attempting to make move without assigning an id to player.
         with self.assertRaises(ValueError) as context:
-            self.player1.make_move(player_move)
+            self.player1.make_move(player_move, self.board)
         
         self.assertEqual(str(context.exception), "Cannot make a move without assigning a player id.")
         
@@ -196,7 +203,7 @@ class TestPlayer(unittest.TestCase):
         # Expecting a ValueError Exception when attempting to make move
         # Without assigning the player an icon
         with self.assertRaises(ValueError) as context:
-            self.player1.make_move(player_move)
+            self.player1.make_move(player_move, self.board)
         
         self.assertEqual(str(context.exception), "Cannot make a move without assigning a player icon.")
 
@@ -210,17 +217,17 @@ class TestPlayer(unittest.TestCase):
         # Assigning a valid player icon
         self.player1.set_player_icon("O")
 
-        self.player1.make_move(player_move)
-        
+        # Make the move for the declared player
+        self.player1.make_move(player_move, self.board)        
 
         player1_move_positions = (2, 1)
 
         # Check if player1 and player2 move positions are correctly recorded
         self.assertIn(player1_move_positions, self.player1.player_moves, 
                         f"Player 1 move: {player1_move_positions} not found in {self.player1.player_moves}")
-
-        print("")
-        print(f"Player 1 moves: {self.player1.player_moves}")
+        
+        # Check that the move is on the board for the specified player
+        self.assertEqual(self.board[2][1], "O")
 
     
 if __name__ == "__main__":
