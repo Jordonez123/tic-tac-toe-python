@@ -7,19 +7,6 @@ class Game:
         self.player2 = player2
         self.board = board
         self.game_winner = None
-
-    def set_up_players(self) -> None:
-        # Ask player 1 for name and assign playing order
-        player1_name = input("Player 1 Name: ")
-        self.player1.set_player_id(0)
-        self.player1.name = player1_name
-        # Ask player 2 for name and assign playing order
-        player2_name = input("Player 2 Name: ")
-        self.player2.set_player_id(1)
-        self.player2.name = player2_name
-        # Assign icons "X" or "O" for player 1 and player respectively
-        self.player1.set_player_icon("X")
-        self.player2.set_player_icon("O")
     
     def get_player_move(self) -> tuple[str, str]:
         print("Enter one of the following positions for the row move: [top, middle, bottom].")
@@ -42,8 +29,6 @@ class Game:
             self.game_winner = "Draw"
 
     def play_game(self) -> None:
-        # Ask players for their names and assign playing order
-        self.set_up_players()
         # main game loop
         # Print the board
         print(self.board)

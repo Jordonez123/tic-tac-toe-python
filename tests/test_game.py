@@ -23,18 +23,6 @@ class TestGame(unittest.TestCase):
         print("--------test_get_player_move--------")
         self.assertEqual(self.game.get_player_move(), ("top", "left"))
     
-    def test_set_up_players(self):
-        print("--------test_set_up_players--------")
-        self.game.set_up_players()
-
-        self.assertEqual(self.game.player1.name, "Jordan")
-        self.assertEqual(self.game.player1.player_id, 0)
-        self.assertEqual(self.game.player1.player_icon, "X")
-
-        self.assertEqual(self.game.player2.name, "Jennifer")
-        self.assertEqual(self.game.player2.player_id, 1)
-        self.assertEqual(self.game.player2.player_icon, "O")
-    
     @patch("builtins.input")
     @patch("builtins.print")  # suppress prints
     def test_play_game_x_wins_top_row(self, mock_print, mock_input):
