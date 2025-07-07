@@ -45,7 +45,10 @@ class Game:
         # Ask players for their names and assign playing order
         self.set_up_players()
         # main game loop
+        # Print the board
+        print(self.board)
         while True:
+            print("-------- Player 1 --------")
             # Ask player 1 for their move
             player1_move_row, player1_move_column = self.get_player_move()
             # Add player 1 move to the board
@@ -55,7 +58,11 @@ class Game:
                 self.process_game_over()
                 # Stop the game
                 break
-            
+
+            # Print the board
+            print(self.board)
+
+            print("---- Player 2 --------")
             # Ask player 2 for their move
             player2_move_row, player2_move_column = self.get_player_move()
             # Add player 2 move to the board
@@ -65,11 +72,26 @@ class Game:
                 self.process_game_over()
                 # Stop the game
                 break
-                    
+
+            # Print the board
+            print(self.board)
+
+        # Print the board
+        print(self.board)
+        
+        self._get_game_captions()
+
     def get_game_winner(self) -> str:
         return self.game_winner
 
     def _get_game_captions(self):
-        pass
-
-
+        print("|Summary of the game|")
+        if self.game_winner:
+            # Get the player with the winning icon
+            if self.player1.player_icon == self.game_winner:
+                print(f"|---- {self.player1.name} won ----|")
+            else:
+                print(f"|---- {self.player2.name} won ----|")
+        else:
+            print(f"|---- The game came to a draw ----|")
+            
