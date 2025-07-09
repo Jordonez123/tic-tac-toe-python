@@ -6,20 +6,7 @@ class Game:
         self.player1 = player1
         self.player2 = player2
         self.board = board
-        self.game_winner = None
-
-    def set_up_players(self) -> None:
-        # Ask player 1 for name and assign playing order
-        player1_name = input("Player 1 Name: ")
-        self.player1.set_player_id(0)
-        self.player1.name = player1_name
-        # Ask player 2 for name and assign playing order
-        player2_name = input("Player 2 Name: ")
-        self.player2.set_player_id(1)
-        self.player2.name = player2_name
-        # Assign icons "X" or "O" for player 1 and player respectively
-        self.player1.set_player_icon("X")
-        self.player2.set_player_icon("O")
+        self._game_winner = None
     
     def get_player_move(self) -> tuple[str, str]:
         print("Enter one of the following positions for the row move: [top, middle, bottom].")
@@ -28,22 +15,23 @@ class Game:
         player_move_column = input("Please enter the column position: ")
         return (player_move_row, player_move_column)
     
-    def process_game_over(self) -> None:
+    def process_game_over(self):
+        """
+        Determine and set the game winner based on the current game state.
+        """
         # Check if the game is over
         # If yes, then get the status code of the game
         # There is a clear winner or a draw
-        game_status_code = self.board.current_game_state()
-        # Update self.game.winner
-        if game_status_code == "X wins":
-            self.game_winner = "X"
-        elif game_status_code == "O wins":
-            self.game_winner = "O"
+        game_status = self.board.current_game_state()
+
+        if game_status == "X wins":
+            self._game_winner = self.player1 if self.player1.player_icon == "X" else self.player2
+        elif game_status == "O wins":
+            self._game_winner = self.player1 if self.player1.player_icon == "O" else self.player2
         else:
-            self.game_winner = "Draw"
+            self._game_winner = None
 
     def play_game(self) -> None:
-        # Ask players for their names and assign playing order
-        self.set_up_players()
         # main game loop
         # Print the board
         print(self.board)
@@ -81,17 +69,14 @@ class Game:
         
         self._get_game_captions()
 
-    def get_game_winner(self) -> str:
-        return self.game_winner
+    def get_game_winner(self) -> PlayerImpl:
+        return self._game_winner
 
     def _get_game_captions(self):
         print("|Summary of the game|")
-        if self.game_winner:
-            # Get the player with the winning icon
-            if self.player1.player_icon == self.game_winner:
-                print(f"|---- {self.player1.name} won ----|")
-            else:
-                print(f"|---- {self.player2.name} won ----|")
+        game_winner = self.get_game_winner()
+        if game_winner:
+            print(f"|---- {game_winner.name} won ----|")
         else:
             print(f"|---- The game came to a draw ----|")
             
