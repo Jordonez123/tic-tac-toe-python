@@ -11,9 +11,7 @@ class PlayerImpl(Player):
                 raise ValueError("Cannot assign an empty or NULL player ID.")
             elif ID not in (0, 1):
                 raise ValueError("Player ID cannot be set to a non-binary value.")
-            self.player_id = ID
-        else:
-            raise ValueError("Cannot overwrite previosuly assigned player ID.")
+        self.player_id = ID
             
     def set_player_icon(self, icon: str) -> None:
         # Check that player ID is already set
@@ -25,9 +23,6 @@ class PlayerImpl(Player):
                 elif icon not in "XO":
                     raise ValueError("Invalid Player icon assignment. Must assign a player icon of either X or O.")
                 self.player_icon = icon
-            # Player icon has been set, attempting invalid overriding
-            else:
-                raise ValueError(f"Player already has an icon: {self.player_icon}")
         else:
             raise ValueError("The player must have a valid player ID before attempting to assign a player icon.")
 

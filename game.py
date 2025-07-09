@@ -9,10 +9,8 @@ class Game:
         self._game_winner = None
     
     def get_player_move(self) -> tuple[str, str]:
-        print("Enter one of the following positions for the row move: [top, middle, bottom].")
-        player_move_row = input("Please enter the row position: ")
-        print("Enter one of the following positions for the column move: [left, middle, right].")
-        player_move_column = input("Please enter the column position: ")
+        player_move_row = input("Please enter the row position (top, middle, bottom): ")
+        player_move_column = input("Please enter the column position (left, middle, right): ")
         return (player_move_row, player_move_column)
     
     def process_game_over(self):
@@ -35,10 +33,12 @@ class Game:
         # main game loop
         # Print the board
         print(self.board)
+        print("")
         while True:
-            print("-------- Player 1 --------")
+            print(f"-------- {self.player1.name} --------")
             # Ask player 1 for their move
             player1_move_row, player1_move_column = self.get_player_move()
+            print("")
             # Add player 1 move to the board
             self.player1.make_move((player1_move_row, player1_move_column), self.board)
             
@@ -49,8 +49,9 @@ class Game:
 
             # Print the board
             print(self.board)
+            print("")
 
-            print("---- Player 2 --------")
+            print(f"-------- {self.player2.name} --------")
             # Ask player 2 for their move
             player2_move_row, player2_move_column = self.get_player_move()
             # Add player 2 move to the board
@@ -63,11 +64,14 @@ class Game:
 
             # Print the board
             print(self.board)
+            print("")
 
         # Print the board
         print(self.board)
         
         self._get_game_captions()
+        print("")
+        print("")
 
     def get_game_winner(self) -> PlayerImpl:
         return self._game_winner

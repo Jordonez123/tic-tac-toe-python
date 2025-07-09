@@ -24,6 +24,8 @@ class Tournament:
         # Assign icons "X" or "O" for player 1 and player respectively
         self.player1.set_player_icon("X")
         self.player2.set_player_icon("O")
+        print("")
+        print("")
 
     def _create_new_game(self) -> Game:
         # Create a new board
@@ -34,12 +36,18 @@ class Tournament:
         # Return the new game
         return new_game
     
-    def start_tournament(self):
-        # Get a new game
-        clean_game = self._create_new_game()
-        
+    def start_tournament(self):        
         # Main loop, for a tournament of 3 games
-        for _ in range(3):
+        for i in range(3):
+            # Say which game we are on
+            print(f"|---- Game {i + 1}/{3} ----|")
+            print("")
+            # Get a new game
+            clean_game = self._create_new_game()
+
+            # Set up the players
+            self.set_up_players()
+
             # Play the game
             clean_game.play_game()
             # Get the winner

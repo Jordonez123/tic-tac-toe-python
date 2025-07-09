@@ -29,20 +29,6 @@ class TestPlayer(unittest.TestCase):
     def test_player_initialization(self):
         self.assertEqual(self.player1.name, "Jordan")
         self.assertEqual(self.player2.name, "Jennifer")
-    
-    def test_cannot_override_player_id(self):
-        # Come up with move original move order
-        original_move_order = 0
-        new_move_order = 1
-
-        # Assign original player ID
-        self.player1.set_player_id(original_move_order)
-
-        # Try to overwrite. Should raise a ValueError Exception
-        with self.assertRaises(ValueError) as context:
-            self.player1.set_player_id(new_move_order)
-
-        self.assertEqual(str(context.exception), "Cannot overwrite previosuly assigned player ID.")
 
     def test_cannot_set_none_player_id(self):
         # Assign a None value to move order
@@ -114,23 +100,6 @@ class TestPlayer(unittest.TestCase):
             self.player1.set_player_icon(player_icon)
         
         self.assertEqual(str(context.exception), "Player icon cannot be set to None or Empty.")
-    
-    def test_cannot_overwrite_player_icon(self):
-        # Set the player ID
-        self.player1.set_player_id(0)
-        
-        # Create original and new icons to test
-        original_icon = "X"
-        new_icon = "O"
-
-        # Assign the original icon to player
-        self.player1.set_player_icon(original_icon)
-        
-        # Expecting a ValueError when attempting to overwrite original player icon
-        with self.assertRaises(ValueError) as context:
-            self.player1.set_player_icon(new_icon)
-
-        self.assertEqual(str(context.exception), f"Player already has an icon: {self.player1.player_icon}")
 
     def test_cannot_assign_icon_without_player_id(self):
         # Create a player icon

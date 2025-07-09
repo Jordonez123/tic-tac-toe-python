@@ -17,15 +17,13 @@ def print_end_game_decorations():
     print("")
     print("")
 
-def create_new_tournament():
-    player1 = PlayerImpl()
-    player2 = PlayerImpl()
-
+def create_new_tournament(player1: PlayerImpl, player2: PlayerImpl):
     tournament = Tournament(player1, player2)
     return tournament
 
 if __name__ == "__main__":
     print_start_game_decorations()
-    print_end_game_decorations()
-    current_tournament = create_new_tournament()
+    player1, player2 = PlayerImpl(""), PlayerImpl("")
+    current_tournament = create_new_tournament(player1, player2)
     current_tournament.start_tournament()
+    print_end_game_decorations()
