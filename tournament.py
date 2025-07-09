@@ -57,6 +57,3 @@ class Tournament:
 
     def get_tournament_winner(self) -> PlayerImpl:
         return self.tournament_winner
-    
-    def display_tournament_winner(self) -> str:
-        pass
