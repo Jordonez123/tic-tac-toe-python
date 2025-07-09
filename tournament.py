@@ -43,10 +43,17 @@ class Tournament:
             # Play the game
             clean_game.play_game()
             # Get the winner
-            winner = clean_game.get_game_winner
-            
+            winner = clean_game.get_game_winner()
+            # Record the winner in the self.player_scores {}
+            if winner:
+                self.player_scores[winner.name] += 1
+        # Tournament has ended
+        self.tournament_ended = True
 
-        
+        # Determine the tournament winner
+        # Get player with the max score
+        # Possible to have all draws
+        self.tournament_winner = max(self.player_scores, key=self.player_scores.get)
 
     def get_tournament_winner(self) -> PlayerImpl:
         return self.tournament_winner
