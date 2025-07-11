@@ -1,3 +1,5 @@
+import time
+import random
 from game import Game
 from player import PlayerImpl
 from board import Board
@@ -13,20 +15,19 @@ class Tournament:
         self.player_scores = defaultdict(int) # {name: score}
 
     def set_up_players(self) -> None:
-        # Ask player 1 for name and assign playing order
+        # Ask player 1 for name
         player1_name = input("Player 1 Name: ")
-        self.player1.set_player_id(0)
         self.player1.name = player1_name
-        # Ask player 2 for name and assign playing order
-        player2_name = input("Player 2 Name: ")
-        self.player2.set_player_id(1)
-        self.player2.name = player2_name
-        # Assign icons "X" or "O" for player 1 and player respectively
-        self.player1.set_player_icon("X")
-        self.player2.set_player_icon("O")
-        print("")
-        print("")
 
+        # Ask player 2 for name
+        player2_name = input("Player 2 Name: ")
+        self.player2.name = player2_name
+    
+    def get_player_order(self):
+        first_player_order = random.randint(0, 1)
+        second_player_order = not first_player_order
+        return first_player_order, second_player_order
+        
     def _create_new_game(self) -> Game:
         # Create a new board
         new_board = Board()
@@ -35,33 +36,60 @@ class Tournament:
         
         # Return the new game
         return new_game
-    
-    def start_tournament(self):        
-        # Main loop, for a tournament of 3 games
-        for i in range(3):
-            # Say which game we are on
-            print(f"|---- Game {i + 1}/{3} ----|")
-            print("")
-            # Get a new game
-            clean_game = self._create_new_game()
 
-            # Set up the players
-            self.set_up_players()
+    def _play_single_game(self, game_number: int):
+        print(f"|---- Game {game_number}/3 ----|\n")
+        clean_game = self._create_new_game()
+        self._determine_playing_order()
+        self._assign_icons()
+        self._announce_playing_order()
+        clean_game.play_game()
+        self._record_winner(clean_game)
 
-            # Play the game
-            clean_game.play_game()
-            # Get the winner
-            winner = clean_game.get_game_winner()
-            # Record the winner in the self.player_scores {}
-            if winner:
-                self.player_scores[winner.name] += 1
-        # Tournament has ended
+    def _determine_playing_order(self):
+        print("")
+        first_player_order, second_player_order = self.get_player_order()
+        self.player1.set_player_id(first_player_order)
+        self.player2.set_player_id(second_player_order)
+
+    def _assign_icons(self):
+        self.player1.player_icon = None
+        self.player2.player_icon = None
+        if self.player1.player_id == 0:
+            self.player1.set_player_icon("X")
+            self.player2.set_player_icon("O")
+        else:
+            self.player1.set_player_icon("O")
+            self.player2.set_player_icon("X")
+
+    def _announce_playing_order(self):
+        print("Determining playing order ...")
+        time.sleep(2)
+        if self.player1.player_id == 0:
+            print(f"{self.player1.name} goes first")
+            print(f"{self.player2.name} goes second")
+        else:
+            print(f"{self.player2.name} goes first")
+            print(f"{self.player1.name} goes second")
+
+    def _record_winner(self, game):
+        winner = game.get_game_winner()
+        if winner:
+            self.player_scores[winner.name] += 1
+
+    def _end_tournament(self):
         self.tournament_ended = True
-
-        # Determine the tournament winner
-        # Get player with the max score
-        # Possible to have all draws
         self.tournament_winner = max(self.player_scores, key=self.player_scores.get)
+
+    def start_tournament(self):
+        self.set_up_players()
+        print("")
+        for i in range(3):
+            self._play_single_game(i + 1)
+            self._end_tournament()
 
     def get_tournament_winner(self) -> PlayerImpl:
         return self.tournament_winner
+    
+    def get_player_scores(self):
+        return self.player_scores

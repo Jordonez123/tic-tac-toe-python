@@ -7,19 +7,29 @@ class Game:
         self.player2 = player2
         self.board = board
         self._game_winner = None
-    
+
     def get_player_move(self) -> tuple[str, str]:
         player_move_row = input("Please enter the row position (top, middle, bottom): ")
         player_move_column = input("Please enter the column position (left, middle, right): ")
         return (player_move_row, player_move_column)
-    
+
+    def get_valid_player_move(self, player: PlayerImpl) -> tuple[str, str]:
+        """
+        Keeps requesting a move from the user until a valid move is provided.
+        """
+        while True:
+            try:
+                move = self.get_player_move()
+                player.make_move(move, self.board)
+                return move  # valid move executed, return
+            except ValueError as e:
+                print(f"Invalid move: {e}")
+                print("Please try again.\n")
+
     def process_game_over(self):
         """
         Determine and set the game winner based on the current game state.
         """
-        # Check if the game is over
-        # If yes, then get the status code of the game
-        # There is a clear winner or a draw
         game_status = self.board.current_game_state()
 
         if game_status == "X wins":
@@ -30,45 +40,34 @@ class Game:
             self._game_winner = None
 
     def play_game(self) -> None:
-        # main game loop
-        # Print the board
-        print(self.board)
         print("")
-        while True:
-            print(f"-------- {self.player1.name} --------")
-            # Ask player 1 for their move
-            player1_move_row, player1_move_column = self.get_player_move()
-            print("")
-            # Add player 1 move to the board
-            self.player1.make_move((player1_move_row, player1_move_column), self.board)
-            
-            if self.board.is_game_over():
-                self.process_game_over()
-                # Stop the game
-                break
-
-            # Print the board
-            print(self.board)
-            print("")
-
-            print(f"-------- {self.player2.name} --------")
-            # Ask player 2 for their move
-            player2_move_row, player2_move_column = self.get_player_move()
-            # Add player 2 move to the board
-            self.player2.make_move((player2_move_row, player2_move_column), self.board)
-            
-            if self.board.is_game_over():
-                self.process_game_over()
-                # Stop the game
-                break
-
-            # Print the board
-            print(self.board)
-            print("")
-
-        # Print the board
         print(self.board)
-        
+
+        while True:
+            first_player = self.player1 if self.player1.player_id == 0 else self.player2
+            second_player = self.player1 if self.player1.player_id == 1 else self.player2
+
+            print(f"-------- {first_player.name} --------")
+            self.get_valid_player_move(first_player)
+            print("")
+            if self.board.is_game_over():
+                self.process_game_over()
+                break
+
+            print(self.board)
+            print("")
+
+            print(f"-------- {second_player.name} --------")
+            self.get_valid_player_move(second_player)
+            print("")
+            if self.board.is_game_over():
+                self.process_game_over()
+                break
+
+            print(self.board)
+            print("")
+
+        print(self.board)
         self._get_game_captions()
         print("")
         print("")
@@ -83,4 +82,3 @@ class Game:
             print(f"|---- {game_winner.name} won ----|")
         else:
             print(f"|---- The game came to a draw ----|")
-            
